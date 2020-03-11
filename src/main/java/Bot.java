@@ -45,14 +45,10 @@ public class Bot extends TelegramLongPollingBot {
         try{
             setButtons(sendMessage);
             execute(sendMessage);
-
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
-
     }
-
-
 
     public void onUpdateReceived(Update update) {
         Message message = update.getMessage();
@@ -87,22 +83,8 @@ public class Bot extends TelegramLongPollingBot {
                     sendMsg(message, "Что будем настраивать?");
                     break;
                 default:
-
             }
         }
-        /*if (update.hasMessage() && update.getMessage().hasText()) {
-                SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-                        .setChatId(update.getMessage().getChatId())
-                        .setText(update.getMessage().getText());
-                try {
-                    execute(message); // Call method to send the message
-                } catch (TelegramApiException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            */
-
     }
 
     public void setButtons(SendMessage sendMessage){
@@ -131,17 +113,3 @@ public class Bot extends TelegramLongPollingBot {
         return "940574943:AAGEjP1mK6ij9Q5SJq5x2DFpsuTcY29AHpU";
     }
 }
-
-/*public class user
-{
-        [Key]
-    public string tg_id { get; set; }//Уникальный айди пользователя
-    public string name { get; set; }//Отображаемое имя
-    public string age { get; set; }// Возраст
-    public string country { get; set; }// Страна
-    public string city { get; set; }//Город
-    public string gender { get; set; }//Пол
-    public string photo { get; set; }//Ссылка на фото
-    public string tg_username { get; set; }//Телеграмовский ник-нейм, по которому можно будет перейти к пользователю в личную переписку
-    public string tg_chat_id { get; set; }//Айди чата, куда отправлять ответ
-}*/
