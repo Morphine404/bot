@@ -1,22 +1,65 @@
+import SvBot.Gender;
+
 public class User {
 
-    public String tg_id ;
-    public String name ;
-    public Integer age ;
-    public String country ;
-    public String city;
-    public String gender;
-    public String photo;
-    public String tg_username;
+    private int idUser;
+    private String Name ;
+    private String lastName;
+    private int age ;
+    //private String city;
+    public Gender gender;
 
-    /*public string tg_id { get; set; } //Уникальный айди пользователя
-    public string name { get; set; }//Отображаемое имя
-    public string age { get; set; }// Возраст
-    public string country { get; set; }// Страна
-    public string city { get; set; }//Город
-    public string gender { get; set; }//Пол
-    public string photo { get; set; }//Ссылка на фото
-    public string tg_username { get; set; }//Телеграмовский ник-нейм, по которому можно будет перейти к пользователю в личную переписку
-    public string tg_chat_id { get; set; }//Айди чата, куда отправлять ответ*/
+    public User(int idUser, String Name, String lastName, int age, Gender gender) {
+        this.idUser = idUser;
+        this.Name = Name;
+        this.lastName = lastName;
+        this.age = age;
+        //this.city = city;
+        this.gender =  gender;
+
+    }
+
+    public int getIdUser() {
+        return idUser;
+    }
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
+    }
+
+    public String getName() {
+        return Name;
+    }
+    public void setName(String Name) {
+        this.Name = Name;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public int getAge() {
+        return age;
+    }
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    /*public String getCity() {
+        return city;
+    }
+    public void setCity(String city) {
+        this.city = city;
+    }*/
+
+    public Gender getGender() {
+        return gender;
+    }
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
 
 }
+

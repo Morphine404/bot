@@ -1,3 +1,4 @@
+import SvBot.Discript;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -6,19 +7,26 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Bot extends TelegramLongPollingBot {
-    public Bot(DefaultBotOptions options) {
+
+    List<Discript> arrayOfDiscript;
+    List<User> arrayOfUser;
+    Bot Bot;
+
+    public Bot (DefaultBotOptions options) {
         super(options);
+        this.arrayOfDiscript = new ArrayList<Discript>();
+        this.arrayOfUser = new ArrayList<User>();
     }
     public static void main(String[] args) {
 
@@ -26,14 +34,16 @@ public class Bot extends TelegramLongPollingBot {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
         try{
             DefaultBotOptions options = ApiContext.getInstance(DefaultBotOptions.class);
-            options.setProxyHost("178.214.12.140");
-            options.setProxyPort(8080);
-            options.setProxyType(DefaultBotOptions.ProxyType.HTTP);
+            options.setProxyHost("127.0.0.1");
+            options.setProxyPort(9150);
+            options.setProxyType(DefaultBotOptions.ProxyType.SOCKS5);
 
             telegramBotsApi.registerBot(new Bot (options));
         } catch(TelegramApiRequestException e) {
             e.printStackTrace();
         };
+
+
     }
 
     public void sendMsg(Message message, String text){
@@ -76,11 +86,11 @@ public class Bot extends TelegramLongPollingBot {
 
         if (message != null && message.hasText()){
             switch (message.getText()) {
-                case "/help":
-                    sendMsg(message, "Чем могу помочь?");
-                    break;
-                case "/settings":
+                case "/Registration":
                     sendMsg(message, "Что будем настраивать?");
+                    break;
+                case "/Help":
+                    sendMsg(message, "Чем могу помочь?");
                     break;
                 default:
             }
@@ -97,19 +107,27 @@ public class Bot extends TelegramLongPollingBot {
         List<KeyboardRow> keyboardRowList = new ArrayList<>();
         KeyboardRow keyboardFirstRow = new KeyboardRow();
 
-        keyboardFirstRow.add(new KeyboardButton( "/help"));
-        keyboardFirstRow.add(new KeyboardButton( "/settings"));
+        keyboardFirstRow.add(new KeyboardButton( "/Registration"));
+        keyboardFirstRow.add(new KeyboardButton( "/Help"));
 
         keyboardRowList.add(keyboardFirstRow);
         replyKeyboardMarkup.setKeyboard(keyboardRowList);
 
     }
+    /*public static void trySendMessage(AbsSender absSender, User user, SendMessage sendMessage) {
+        try {
+            absSender.execute(sendMessage);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }*/
 
     public String getBotUsername() {
         return "Svahasvetabot";
     }
 
     public String getBotToken() {
+        //return System.getenv("B_TOKEN");
         return "940574943:AAGEjP1mK6ij9Q5SJq5x2DFpsuTcY29AHpU";
     }
 }
