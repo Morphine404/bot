@@ -8,7 +8,6 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
@@ -26,14 +25,14 @@ import java.util.List;
 
 public class Bot extends TelegramLongPollingBot {
 
-    /*List<SvBot.Discript> arrayOfDiscript;
+    List<SvBot.Discript> arrayOfDiscript;
     List<SvBot.User> arrayOfUser;
-    Bot Bot;*/
+    Bot Bot;
 
     public Bot (DefaultBotOptions options) {
         super(options);
-        //this.arrayOfDiscript = new ArrayList<SvBot.Discript>();
-        //this.arrayOfUser = new ArrayList<SvBot.User>();
+        this.arrayOfDiscript = new ArrayList<SvBot.Discript>();
+        this.arrayOfUser = new ArrayList<SvBot.User>();
     }
     /*private String check (String name, String last_name, int user_id, String username) {
         MongoClientURI connectionString = new MongoClientURI( "mongodb://host:port" );
@@ -113,7 +112,9 @@ public class Bot extends TelegramLongPollingBot {
         if (message != null && message.hasText()){
             switch (message.getText()) {
                 case "/Registration":
-                    sendMsg(message, "Что будем настраивать?");
+                    sendMsg(message, "Давай зарегестрируемся!");
+                    if (message.equals("Registration")  )
+                    { }
                     break;
                 case "/Help":
                     sendMsg(message, "Чем могу помочь?");

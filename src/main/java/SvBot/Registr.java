@@ -14,20 +14,18 @@ public class Registr extends BotCommand{
         sendMessage = new SendMessage();
     }
 
-
-
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
         try {
             Gender newgender = null;
-            if (arguments[4] == "female") {
+            if (arguments[5] == "female") {
                 newgender = Gender.female;
-            } else if (arguments[4] == "male") {
+            } else if (arguments[5] == "male") {
                 newgender = Gender.male;
             }
-            /*SvBot.User newUser = new SvBot.User(Integer.parseInt(arguments[0]), arguments[1],
-                    arguments[2], Integer.parseInt(arguments[3]),
-                    newgender]);*/
+            SvBot.User newUser = new SvBot.User(Integer.parseInt(arguments[0]), arguments[1],
+                    arguments[2], Integer.parseInt(arguments[3]), arguments[4],
+                    newgender);
         } catch (Exception e) {
             e.printStackTrace();
         }
