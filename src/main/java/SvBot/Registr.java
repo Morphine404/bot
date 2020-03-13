@@ -1,6 +1,5 @@
 package SvBot;
 
-import SvBot.Gender;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Chat;
@@ -16,7 +15,7 @@ public class Registr extends BotCommand{
     }
 
 
-    //@Override
+
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
         try {
@@ -26,7 +25,7 @@ public class Registr extends BotCommand{
             } else if (arguments[4] == "male") {
                 newgender = Gender.male;
             }
-            /*User newUser = new User(Integer.parseInt(arguments[0]), arguments[1],
+            /*SvBot.User newUser = new SvBot.User(Integer.parseInt(arguments[0]), arguments[1],
                     arguments[2], Integer.parseInt(arguments[3]),
                     newgender]);*/
         } catch (Exception e) {

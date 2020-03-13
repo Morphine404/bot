@@ -1,4 +1,5 @@
-import SvBot.Discript;
+package SvBot;
+
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -11,24 +12,50 @@ import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
+import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
-
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
+import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Bot extends TelegramLongPollingBot {
 
-    List<Discript> arrayOfDiscript;
-    List<User> arrayOfUser;
-    Bot Bot;
+    /*List<SvBot.Discript> arrayOfDiscript;
+    List<SvBot.User> arrayOfUser;
+    Bot Bot;*/
 
     public Bot (DefaultBotOptions options) {
         super(options);
-        this.arrayOfDiscript = new ArrayList<Discript>();
-        this.arrayOfUser = new ArrayList<User>();
+        //this.arrayOfDiscript = new ArrayList<SvBot.Discript>();
+        //this.arrayOfUser = new ArrayList<SvBot.User>();
     }
+    /*private String check (String name, String last_name, int user_id, String username) {
+        MongoClientURI connectionString = new MongoClientURI( "mongodb://host:port" );
+        MongoClient mongoClient = new MongoClient(connectionString);
+        MongoDatabase database = mongoClient.getDatabase( "db_name" );
+        MongoCollection<Document> collection = database.getCollection( "users" );
+        long found = collection.count(Document.parse( "{id : " + Integer.toString(user_id) + "}" ));
+        if (found == 0 ) {
+            Document doc = new Document( "first_name" , name) .append( "last_name" , last_name)
+                    .append( "id" , user_id) .append( "username" , username);
+            collection.insertOne(doc);
+            mongoClient.close();
+            System.out.println( "SvBot.User not exists in database. Written." );
+            return "no_exists" ;
+        } else {
+            System.out.println( "SvBot.User exists in database." );
+            mongoClient.close();
+            return "exists" ;
+        }
+    }*/
     public static void main(String[] args) {
+        System.out.println("Started");
 
         ApiContextInitializer.init();
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
@@ -42,8 +69,6 @@ public class Bot extends TelegramLongPollingBot {
         } catch(TelegramApiRequestException e) {
             e.printStackTrace();
         };
-
-
     }
 
     public void sendMsg(Message message, String text){
@@ -61,6 +86,7 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     public void onUpdateReceived(Update update) {
+
         Message message = update.getMessage();
         /*if (update.hasMessage() && update.getMessage().hasText()) {
 
@@ -114,13 +140,6 @@ public class Bot extends TelegramLongPollingBot {
         replyKeyboardMarkup.setKeyboard(keyboardRowList);
 
     }
-    /*public static void trySendMessage(AbsSender absSender, User user, SendMessage sendMessage) {
-        try {
-            absSender.execute(sendMessage);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
-    }*/
 
     public String getBotUsername() {
         return "Svahasvetabot";
