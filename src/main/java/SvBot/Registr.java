@@ -25,7 +25,7 @@ public class Registr extends BotCommand{
             }
             SvBot.User newUser = new SvBot.User(Integer.parseInt(arguments[0]), arguments[1],
                     arguments[2], Integer.parseInt(arguments[3]), arguments[4],
-                    newgender);
+                    newgender, arguments[6], arguments [7]);
         } catch (Exception e) {
             e.printStackTrace();
         }

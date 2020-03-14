@@ -8,16 +8,21 @@ public class User {
     private int age ;
     private String city;
     public Gender gender;
+    private String hobby;
+    private String zodiak;
     //public String tg_username;
     //public String tg_id;
 
-    public User(int idUser, String Name, String lastName, int age, String city, Gender gender) {
+    public User(int idUser, String Name, String lastName, int age,
+                String city, Gender gender, String hobby, String zodiak) {
         this.idUser = idUser;
         this.Name = Name;
         this.lastName = lastName;
         this.age = age;
         this.city = city;
         this.gender =  gender;
+        this.hobby = hobby;
+        this.zodiak = zodiak;
     }
 
     public int getIdUser() {
@@ -62,6 +67,21 @@ public class User {
         this.gender = gender;
     }
 
+    public String getHobby() {
+        return hobby;
+    }
+    public void setHobby(String hobby) {
+        this.hobby = hobby;
+    }
 
+    public String getZodiak() {
+        return zodiak;
+    }
+    public void setZodiak(String zodiak) {
+        this.zodiak = zodiak;
+    }
 }
-
+enum Gender {
+    male,
+    female
+}

@@ -2,7 +2,7 @@ package SvBot;
 
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
 import org.telegram.telegrambots.meta.ApiContext;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -11,63 +11,48 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
-import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
-import org.json.JSONObject;
-import java.util.ArrayList;
-import java.util.List;
+import org.apache.log4j.Logger;
 
-public class Bot extends TelegramLongPollingBot {
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.*;
 
-    List<SvBot.Discript> arrayOfDiscript;
+
+public class Bot extends TelegramLongPollingCommandBot {
+
+    static Map<Integer,String> Anketa = new HashMap<>();
+    static Map<Integer,List>  Lyalya = new HashMap<>();
+    final static Logger logger = Logger.getLogger(Bot.class.getName());
+    //List<SvBot.Discript> arrayOfDiscript;
     List<SvBot.User> arrayOfUser;
     Bot Bot;
+    static String BotToken, BotUsername, startMsg, voteMsg, wrongFormatMsg, wrongNumberMsg, statusMsg, revoteMsg;
+    static String ruRegMsg, ruVoteMsg, ruRevoteMsg, ruWrongNumberMsg, ruWrongFormatMsg, ruStartMsg, ruDoubleVoteMsg;
 
-    public Bot (DefaultBotOptions options) {
-        super(options);
-        this.arrayOfDiscript = new ArrayList<SvBot.Discript>();
+    public Bot (DefaultBotOptions botOptions) {
+        super(botOptions);
+        //this.arrayOfDiscript = new ArrayList<SvBot.Discript>();
         this.arrayOfUser = new ArrayList<SvBot.User>();
     }
-    /*private String check (String name, String last_name, int user_id, String username) {
-        MongoClientURI connectionString = new MongoClientURI( "mongodb://host:port" );
-        MongoClient mongoClient = new MongoClient(connectionString);
-        MongoDatabase database = mongoClient.getDatabase( "db_name" );
-        MongoCollection<Document> collection = database.getCollection( "users" );
-        long found = collection.count(Document.parse( "{id : " + Integer.toString(user_id) + "}" ));
-        if (found == 0 ) {
-            Document doc = new Document( "first_name" , name) .append( "last_name" , last_name)
-                    .append( "id" , user_id) .append( "username" , username);
-            collection.insertOne(doc);
-            mongoClient.close();
-            System.out.println( "SvBot.User not exists in database. Written." );
-            return "no_exists" ;
-        } else {
-            System.out.println( "SvBot.User exists in database." );
-            mongoClient.close();
-            return "exists" ;
-        }
-    }*/
+
     public static void main(String[] args) {
         System.out.println("Started");
-
         ApiContextInitializer.init();
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
         try{
-            DefaultBotOptions options = ApiContext.getInstance(DefaultBotOptions.class);
-            options.setProxyHost("127.0.0.1");
-            options.setProxyPort(9150);
-            options.setProxyType(DefaultBotOptions.ProxyType.SOCKS5);
-
-            telegramBotsApi.registerBot(new Bot (options));
+            DefaultBotOptions botOptions = ApiContext.getInstance(DefaultBotOptions.class);
+            botOptions.setProxyHost("127.0.0.1");
+            botOptions.setProxyPort(9150);
+            botOptions.setProxyType(DefaultBotOptions.ProxyType.SOCKS5);
+            telegramBotsApi.registerBot(new Bot (botOptions));
         } catch(TelegramApiRequestException e) {
-            e.printStackTrace();
+            logger.error("Error telegram bot token:  " + e);
+            System.exit(0);
         };
+        logger.info("BOT WORKING");
     }
 
     public void sendMsg(Message message, String text){
@@ -84,7 +69,7 @@ public class Bot extends TelegramLongPollingBot {
         }
     }
 
-    public void onUpdateReceived(Update update) {
+    public void processNonCommandUpdate(Update update) {
 
         Message message = update.getMessage();
         /*if (update.hasMessage() && update.getMessage().hasText()) {
@@ -105,23 +90,67 @@ public class Bot extends TelegramLongPollingBot {
             e.printStackTrace();
         }
     }*/
-        if (message.equals("/start")) {
-            sendMsg(message, "Привет-привет!");
+        if (message.getText().equals("/start")) {
+            sendMsg(message, "Привет-привет! Я бот знакомств");
+            logger.info("Posted /start message");
         }
 
         if (message != null && message.hasText()){
             switch (message.getText()) {
                 case "/Registration":
-                    sendMsg(message, "Давай зарегестрируемся!");
-                    if (message.equals("Registration")  )
-                    { }
-                    break;
+                    sendMsg(message, "Хочешь знакомиться? " + "\nДавай сначала познакомимся со мной! :)" );
+                    sendMsg(message, "Для начала представься");
+                    logger.info("Nachalo registracii");
+                    /*if(update.hasCallbackQuery()){
+                        try {
+                            execute(new sendMsg().setText(
+                                    update.getCallbackQuery().getData())
+                                    .setChatId(update.getCallbackQuery().getMessage().getChatId()));
+                        } catch (TelegramApiException e) {
+                            e.printStackTrace();
+                        }*/
+                    /*if (message != null && message.hasText())
+                    {
+
+                        //sendMsg(message, "");
+                    }
+                    break;*/
                 case "/Help":
                     sendMsg(message, "Чем могу помочь?");
                     break;
                 default:
             }
         }
+    }
+    public static void settings() {
+        Properties properties = new Properties();
+        FileInputStream in = null;
+        try {
+            in = new FileInputStream("src/main/resources/configuration.properties");
+            properties.load(in);
+        } catch (FileNotFoundException e) {
+            logger.error("FILE NOT FOUND EXCEPTION: " + e);
+        } catch (IOException e) {
+            logger.error("IO EXCEPTION: " + e);
+        }
+
+        //BotToken = properties.getProperty("BotToken");
+        //BotUsername = properties.getProperty("BotUsername", "Unknown Bot");
+
+        // ADDING VARS
+        /*String players = properties.getProperty("allPlayers");
+        int id = 1;
+        while (players.contains(",")) {
+            playerName.put(id, players.substring(0, players.indexOf(",")));
+            players = players.substring(players.indexOf(", ") + 2);
+            id++;
+        }
+        playerName.put(id, players);*/
+
+
+        /*for (int i = 1; i < playerName.size() + 1; i++) {
+            playerVotes.put(i, 0);
+        }*/
     }
 
     public void setButtons(SendMessage sendMessage){
@@ -144,10 +173,11 @@ public class Bot extends TelegramLongPollingBot {
 
     public String getBotUsername() {
         return "Svahasvetabot";
+       //return BotUsername;
     }
 
     public String getBotToken() {
-        //return System.getenv("B_TOKEN");
+        //return BotToken;
         return "940574943:AAGEjP1mK6ij9Q5SJq5x2DFpsuTcY29AHpU";
     }
 }
