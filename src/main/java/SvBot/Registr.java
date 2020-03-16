@@ -16,20 +16,22 @@ public class Registr extends BotCommand{
 
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
-        try {
+        /*try {
             Gender newgender = null;
-            if (arguments[5] == "female") {
+            if (arguments[4] == "female") {
                 newgender = Gender.female;
-            } else if (arguments[5] == "male") {
+            } else if (arguments[4] == "male") {
                 newgender = Gender.male;
             }
             SvBot.User newUser = new SvBot.User(Integer.parseInt(arguments[0]), arguments[1],
-                    arguments[2], Integer.parseInt(arguments[3]), arguments[4],
-                    newgender, arguments[6], arguments [7]);
+                    Integer.parseInt(arguments[2]), arguments[3],
+                    newgender, arguments[5], arguments [6]);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
+
+
 }
 
 
